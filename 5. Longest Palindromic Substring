@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+     short int i = 0, low = 0, high = 0, n = s.length(), mxLen = 1, sInd = 0;
+        
+        while(i < n){
+            
+            high = i;
+            while(high < n - 1 && s[high] == s[high + 1])
+                high++;// Skip duplicate characters.
+            
+            low = i;
+            i = high + 1; //for next iteration.
+            
+            while(0 <= low && high < n && s[low] == s[high])
+                low--, high++;
+            
+            if(mxLen < high - low - 1)
+                mxLen = high - low - 1, sInd = low + 1;
+            
+        }
+        
+        return s.substr(sInd, mxLen);
+    }
+};
