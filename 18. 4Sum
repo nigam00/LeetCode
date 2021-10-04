@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        return NSum(nums, 0, nums.size() - 1, 4, target);
+    }
+private:
+    vector<vector<int>> NSum(vector<int>& nums, int left, int right, int N, int target){
+        vector<vector<int>> answer;
+        // early stop
+        if (right - left + 1 < N || N < 2 || target < (long) nums[left] * N || target > nums[right] * N)
+            return answer;
+        if (N == 2)
+            return TwoSum(nums, left, right, target);
+        else{
+            for (int i = left; i < right; i++){
+                if (i > left && nums[i] == nums[i - 1])
+                    continue;
+                vector<vector<int>> results = NSum(nums, i + 1, right, N-1, target - nums[i]);
+                for (auto& result : results){
+                    result.push_back(nums[i]);
+                    answer.push_back(result);
+                }
+                
+            }
+        }
+        return answer;
+    }
+        vector<vector<int>> TwoSum(vector<int>& nums, int left, int right,
+                               int target) {
+        vector<vector<int>> result;
+        while (left < right) {
+            if (nums[left] + nums[right] == target) {
+                result.push_back({nums[left], nums[right]});
+                while (left + 1 < right && nums[left] == nums[left + 1]) left++;
+                while (right - 1 > left && nums[right] == nums[right - 1])
+                    right--;
+                left++;
+                right--;
+            } else if (nums[left] + nums[right] < target)
+                left++;
+            else
+                right--;
+        }
+        return result;
+    }
+};
