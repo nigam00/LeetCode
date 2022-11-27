@@ -1,0 +1,56 @@
+
+//easy to understand
+class Solution {
+public:
+    int numSplits(string s) {
+    vector<int> charCount(26,0);
+    int uniqueChars = 0;
+    for(char c : s) {
+        if(charCount[c-'a'] == 0) {
+            uniqueChars++;
+        }
+        charCount[c-'a']++;
+    }
+    
+    vector<int> visitedCount(26,0);
+    
+    int partitions = 0;
+    
+    int uniqueVisitedChars = 0;
+    
+    for(int i=0;i<s.size();i++) {
+        if(visitedCount[s[i]-'a'] == 0) {
+            uniqueVisitedChars++;
+        }
+        visitedCount[s[i]-'a']++;
+        charCount[s[i]-'a']--;
+        
+        if(charCount[s[i]-'a'] == 0) {
+            uniqueChars--;
+        }
+  
+        if(uniqueChars == uniqueVisitedChars) {
+            partitions++;
+        }
+    }
+    return partitions; 
+    }
+};
+
+
+//less memory and short solution:
+class Solution {
+public:
+    int numSplits(string s) {
+        vector<int> freqLeft(26) , freqRight(26);
+        int cnt1=0,cnt2=0,ans=0;
+        for(char ch : s) if(!freqRight[ch-'a']++) cnt2++;
+        for(char ch : s)
+        {
+            if(!freqLeft[ch-'a']++) cnt1++;
+            if(--freqRight[ch-'a'] == 0) cnt2--;
+            if(cnt1==cnt2) ans++;
+        }
+        return ans;
+    }
+};
