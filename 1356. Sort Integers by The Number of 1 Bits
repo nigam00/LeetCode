@@ -1,15 +1,20 @@
 class Solution {
 public:
-    vector<int> sortByBits(vector<int>& arr) {
-          int n = arr.size();
-        pair<int, int> a[505];
-        for(int i=0; i<n; i++) {
-            int cnt = __builtin_popcount(arr[i]);
-            a[i] = {cnt, arr[i]};
+
+    static bool cmp(int a, int b){
+        int c1 = __builtin_popcount(a);
+        int c2 = __builtin_popcount(b);
+        if (c1 == c2){
+            return a < b;
         }
-        sort(a, a+n);
-        vector<int> ans;
-        for(int i=0; i<n; i++) ans.push_back(a[i].second);
-        return ans;
+        return c1 < c2;
+
+    }
+
+    vector<int> sortByBits(vector<int>& arr) {
+        
+        sort(arr.begin(), arr.end(), cmp);
+        return arr;
+
     }
 };
